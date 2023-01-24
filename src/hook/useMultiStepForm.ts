@@ -6,19 +6,12 @@ export function useMultiStepForm(steps: ReactElement[]) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
     const next = ()=>{
-        setCurrentStepIndex(i => {
-            //return nothing if the there is no more step forward.
-            if(i >= steps.length - 1) return i; 
-            return i + 1;
-        })
+        setCurrentStepIndex(prev => prev >= steps.length -1? prev : prev + 1);
     }
 
     const back = ()=> {
-        setCurrentStepIndex(i =>{
-            //return nothing if the there is no more step backward
-            if (i <= 0 ) return i; 
-            return i - 1;
-        })
+        //return nothing if the there is no more step backward;)
+        setCurrentStepIndex(prev => prev<= 0? prev: prev-1)
     }
 
     const goTo = (index: number) => {
