@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type formData = {
+export interface FormData{
     firstName: string;
     lastName: string;
     age: number;
@@ -17,7 +17,7 @@ export type formData = {
 }
 
 
-export type FormWrapperProps = {
+export interface FormWrapperProps {
     title: string;
     children: ReactNode;
 }
@@ -29,7 +29,7 @@ export type UserData = {
     age: number;
 }
 
-export interface UserFormProps extends UserData {
+export type UserFormProps = UserData & {
     updateFields: (fields: Partial<UserData>) => void;
 }
 

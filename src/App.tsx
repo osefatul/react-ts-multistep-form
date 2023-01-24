@@ -1,9 +1,13 @@
 import { FormEvent, useState } from 'react'
 import './App.css'
-import { formData } from './types'
+import AccountForm from './components/AccountForm'
+import AddressForm from './components/AddressForm'
+import UserForm from './components/UserForm'
+import { useMultiStepForm } from './hook/useMultiStepForm'
+import { FormData } from './types'
 
 function App() {
-  const initialState: formData = {
+  const initialState: FormData = {
     firstName: "",
     lastName: "",
     age: 0,
@@ -11,19 +15,70 @@ function App() {
     street: "",
     city: "",
     state: "",
-    zip: ",",
+    zip: "",
     country: "",
     email: "",
     password: "",
   }
+  
+  const [data, setData] = useState(initialState);
 
-  const [data, setData] = useState<formData>(initialState);
+  function updateFields(fields: Partial <FormData> ) {
+    setData(prev => ({ ...prev, ...fields }));
+  }
 
-  return (
-    <div>
 
+
+  const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
+    useMultiStepForm([
+      <UserForm {...data} updateFields={updateFields} />,
+      <AddressForm {...data} updateFields={updateFields} />,
+      <AccountForm {...data} updateFields={updateFields} />,
+    ]);
+
+
+    function handleSubmit(e: FormEvent) {
+      e.preventDefault();
+      if (!isLastStep) return next();
+      alert(JSON.stringify(data));
+    }
+
+  return(
+    <div
+      style={{
+        position: 'relative',
+        background: 'white',
+        border: '1px solid black',
+        padding: '2rem',
+        margin: '1rem',
+        borderRadius: '.5rem',
+        fontFamily: 'Arial',
+        maxWidth: 'max-content',
+      }}
+    >
+      <form onSubmit={handleSubmit}>
+        <div style={{ position: 'absolute', top: '.5rem', right: '.5rem' }}>
+          {currentStepIndex + 1}/{steps.length}
+        </div>
+        {step}
+        <div
+          style={{
+            marginTop: '1rem',
+            display: 'flex',
+            gap: '.5rem',
+            justifyContent: 'flex-end',
+          }}
+        >
+          {!isFirstStep && (
+            <button type="button" onClick={back}>
+              Back
+            </button>
+          )}
+          <button type="submit">{isLastStep ? 'Finish' : 'Next'}</button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
 
 export default App

@@ -5,7 +5,13 @@ import { UserFormProps } from '../types'
 
 
 
-function UserForm({firstName, lastName, age, updateFields,}: UserFormProps) {
+function UserForm({
+    firstName,
+    lastName,
+    age,
+    updateFields,
+    }: UserFormProps)  {
+        
     return (
         <FormWrapper title='User Details'>
 
