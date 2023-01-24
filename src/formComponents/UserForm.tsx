@@ -13,7 +13,7 @@ function UserForm({
     }: UserFormProps)  {
         
     return (
-        <FormWrapper title='User Details'>
+        <FormWrapper title='Enter Personal Information'>
 
             <label htmlFor="firstName">First Name</label>
             <input 

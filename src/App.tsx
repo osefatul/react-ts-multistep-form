@@ -21,26 +21,33 @@ function App() {
     password: "",
   }
   
-  const [data, setData] = useState(initialState);
+
+  const [formData, setFormData] = useState(initialState);
 
   function updateFields(fields: Partial <FormData> ) {
-    setData(prev => ({ ...prev, ...fields }));
+    setFormData(prev => ({ ...prev, ...fields }));
   }
 
 
-
-  const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
+  const { 
+    currentStepIndex, 
+    step, 
+    steps, 
+    isFirstStep, 
+    isLastStep, 
+    backStep, 
+    nextStep } =
     useMultiStepForm([
-      <UserForm {...data} updateFields={updateFields} />,
-      <AddressForm {...data} updateFields={updateFields} />,
-      <AccountForm {...data} updateFields={updateFields} />,
+      <UserForm {...formData} updateFields={updateFields} />,
+      <AddressForm {...formData} updateFields={updateFields} />,
+      <AccountForm {...formData} updateFields={updateFields} />,
     ]);
 
 
     function handleSubmit(e: FormEvent) {
       e.preventDefault();
-      if (!isLastStep) return next();
-      alert(JSON.stringify(data));
+      if (!isLastStep) return nextStep();
+      alert(JSON.stringify(formData));
     }
 
   return(
@@ -54,8 +61,7 @@ function App() {
         borderRadius: '.5rem',
         fontFamily: 'Arial',
         maxWidth: 'max-content',
-      }}
-    >
+      }}>
       <form onSubmit={handleSubmit}>
         <div style={{ position: 'absolute', top: '.5rem', right: '.5rem' }}>
           {currentStepIndex + 1}/{steps.length}
@@ -70,7 +76,7 @@ function App() {
           }}
         >
           {!isFirstStep && (
-            <button type="button" onClick={back}>
+            <button type="button" onClick={backStep}>
               Back
             </button>
           )}
